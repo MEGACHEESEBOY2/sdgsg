@@ -1,10 +1,10 @@
 # sdgfg.py
-from three import *
+from three import Scene, PerspectiveCamera, WebGLRenderer,CubeGeometry,SphereGeometry,MeshNormalMaterial,Mesh, PlaneGeometry, 
 # We will control the horizontal. We will control the vertical.
-from browser import *
-
+#from browser import *
+import browser
 # Discard the old canvas if it exists. 
-for canvas in document.getElementsByTagName("canvas"):
+for canvas in browser.document.getElementsByTagName("canvas"):
     canvas.parentNode.removeChild(canvas)
 
 scene = Scene()
@@ -15,11 +15,11 @@ camera.position.z = 2
 
 renderer = WebGLRenderer()
 
-container = document.getElementById("canvas-container")
+container = browser.document.getElementById("canvas-container")
 container.appendChild(renderer.domElement)
 
-geometry = CubeGeometry(1, 1, 1)
-geometry = SphereGeometry(1.0, 32, 24)
+geometry = PlaneGeometry(1, 1, 1)
+#geometry = SphereGeometry(1.0, 32, 24)
 material = MeshNormalMaterial()
 mesh = Mesh(geometry, material)
 scene.add(mesh)
@@ -37,9 +37,9 @@ def render():
     renderer.render(scene, camera)
 
 def onWindowResize():
-    camera.aspect = window.innerWidth / window.innerHeight
+    camera.aspect = browser.window.innerWidth / browser.window.innerHeight
     camera.updateProjectionMatrix()
-    renderer.size = (window.innerWidth, window.innerHeight)
+    renderer.size = (browser.window.innerWidth, browser.window.innerHeight)
     
 def step(timestamp):
     global requestID, progress, startTime
@@ -52,14 +52,14 @@ def step(timestamp):
             progress = 0
         
     if (progress < progressEnd):
-        requestID = window.requestAnimationFrame(step)
+        requestID = browser.window.requestAnimationFrame(step)
         render()
     else:
-        window.cancelAnimationFrame(requestID)
+        browser.window.cancelAnimationFrame(requestID)
         # container.removeChild(renderer.domElement)
         # TODO: Remove the "resize" event listener
 
-window.addEventListener("resize", onWindowResize, False)
+browser.window.addEventListener("resize", onWindowResize, False)
 
 onWindowResize()
 
